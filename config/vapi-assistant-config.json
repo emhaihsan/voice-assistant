@@ -1,0 +1,161 @@
+{
+  "assistant": {
+    "name": "Mike - Personal Assistant",
+    "firstMessage": "Hey, I am Mike, your personal management assistant. How can I help you today?",
+    "model": {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "temperature": 0.3
+    },
+    "voice": {
+      "provider": "elevenlabs",
+      "voiceId": "drew",
+      "stability": 0.5,
+      "similarityBoost": 0.75,
+      "style": 0.3
+    },
+    "transcriber": {
+      "provider": "deepgram",
+      "model": "nova-2",
+      "language": "en",
+      "smartFormat": true,
+      "endpointing": 600
+    },
+    "systemPrompt": "You are Mike, a helpful and efficient personal management assistant. You help users manage their daily tasks, reminders, and calendar events through natural conversation.\n\n## Capabilities\nYou can help users with:\n- **Todos**: Create, complete, delete, and list todos\n- **Reminders**: Add reminders with importance levels (high/medium/low)\n- **Calendar**: Schedule events with start and end times\n\n## Guidelines\n1. Be friendly, professional, and concise\n2. Always confirm actions after completing them (\"I've added 'Buy milk' to your reminders\")\n3. If a user wants to complete or delete an item but doesn't specify which one, first list the items and ask them to specify\n4. For calendar events, ask for title, description (optional), start time, and end time\n5. For reminders, ask for the reminder text and importance level\n\n## Important Notes\n- When a user says \"delete\" or \"complete\" without specifying ID, load the list first and ask them to clarify\n- Convert natural language times to ISO format for calendar entries (e.g., \"tomorrow 3pm\" → \"2026-04-01T15:00:00\")\n- Always echo back what you've done to confirm understanding"
+  },
+  "tools": [
+    {
+      "name": "create_todo",
+      "description": "Create a new todo item. Use when the user wants to add a task to their todo list.",
+      "method": "POST",
+      "parameters": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the todo item"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description for the todo"
+          }
+        },
+        "required": ["title"]
+      }
+    },
+    {
+      "name": "get_todos",
+      "description": "Get all todo items. Use when the user asks to see their todos or task list."
+    },
+    {
+      "name": "complete_todo",
+      "description": "Mark a todo as completed. Use when the user says they finished a task or wants to mark something as done. If ID is not specified, get the list first and ask user to clarify.",
+      "method": "POST",
+      "parameters": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The ID of the todo to complete. If not explicitly specified, get the list first and ask user."
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "delete_todo",
+      "description": "Delete a todo item. Use when the user wants to remove a task. If ID is not specified, get the list first and ask user to clarify.",
+      "method": "POST",
+      "parameters": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The ID of the todo to delete. If not explicitly specified, get the list first and ask user."
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "add_reminder",
+      "description": "Add a new reminder with importance level. Use when user wants to set a reminder.",
+      "method": "POST",
+      "parameters": {
+        "properties": {
+          "reminder_text": {
+            "type": "string",
+            "description": "The text content of the reminder"
+          },
+          "importance": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "Importance level of the reminder"
+          }
+        },
+        "required": ["reminder_text", "importance"]
+      }
+    },
+    {
+      "name": "get_reminders",
+      "description": "Get all reminders. Use when user asks to see their reminders."
+    },
+    {
+      "name": "delete_reminder",
+      "description": "Delete a reminder. Use when user wants to remove a reminder. If ID not specified, get the list first.",
+      "method": "POST",
+      "parameters": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The ID of the reminder to delete"
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    {
+      "name": "add_calendar_entry",
+      "description": "Add a calendar event. Use when user wants to schedule something. Ask for title, description (optional), start time, and end time. Convert natural language times to ISO format.",
+      "method": "POST",
+      "parameters": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the calendar event"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the event"
+          },
+          "event_from": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time in ISO 8601 format (e.g., 2026-04-01T14:00:00)"
+          },
+          "event_to": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End time in ISO 8601 format (e.g., 2026-04-01T15:00:00)"
+          }
+        },
+        "required": ["title", "event_from", "event_to"]
+      }
+    },
+    {
+      "name": "get_calendar_entries",
+      "description": "Get all calendar events. Use when user asks about their schedule or calendar."
+    },
+    {
+      "name": "delete_calendar_entry",
+      "description": "Delete a calendar event. Use when user wants to cancel or remove an event. If ID not specified, get the list first.",
+      "method": "POST",
+      "parameters": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The ID of the calendar event to delete"
+          }
+        },
+        "required": ["id"]
+      }
+    }
+  ]
+}
