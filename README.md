@@ -42,7 +42,7 @@ User (Voice) ←→ Vapi Platform ←→ FastAPI Backend
 | STT | Deepgram Nova 2 |
 | TTS | ElevenLabs |
 | LLM | OpenAI GPT-4o |
-| Tunneling (dev) | localhost.run / Cloudflare Tunnel |
+| Tunneling (dev) | ngrok |
 
 ## Quick Start
 
@@ -128,18 +128,18 @@ For each endpoint, create a custom tool in Vapi:
 
 | Tool Name | Server URL | Properties | Required |
 |-----------|-----------|------------|----------|
-| `create_todo` | `{tunnel_url}/create_todo` | title (string), description (string) | title |
-| `get_todos` | `{tunnel_url}/get_todos` | — | — |
-| `complete_todo` | `{tunnel_url}/complete_todo` | id (integer) | id |
-| `delete_todo` | `{tunnel_url}/delete_todo` | id (integer) | id |
-| `add_reminder` | `{tunnel_url}/add_reminder` | reminder_text (string), importance (string) | both |
-| `get_reminders` | `{tunnel_url}/get_reminders` | — | — |
-| `delete_reminder` | `{tunnel_url}/delete_reminder` | id (integer) | id |
-| `add_calendar_entry` | `{tunnel_url}/add_calendar_entry` | title, description, event_from, event_to | title, event_from, event_to |
-| `get_calendar_entries` | `{tunnel_url}/get_calendar_entries` | — | — |
-| `delete_calendar_entry` | `{tunnel_url}/delete_calendar_entry` | id (integer) | id |
+| `create_todo` | `{ngrok_url}/create_todo` | title (string), description (string) | title |
+| `get_todos` | `{ngrok_url}/get_todos` | — | — |
+| `complete_todo` | `{ngrok_url}/complete_todo` | id (integer) | id |
+| `delete_todo` | `{ngrok_url}/delete_todo` | id (integer) | id |
+| `add_reminder` | `{ngrok_url}/add_reminder` | reminder_text (string), importance (string) | both |
+| `get_reminders` | `{ngrok_url}/get_reminders` | — | — |
+| `delete_reminder` | `{ngrok_url}/delete_reminder` | id (integer) | id |
+| `add_calendar_entry` | `{ngrok_url}/add_calendar_entry` | title, description, event_from, event_to | title, event_from, event_to |
+| `get_calendar_entries` | `{ngrok_url}/get_calendar_entries` | — | — |
+| `delete_calendar_entry` | `{ngrok_url}/delete_calendar_entry` | id (integer) | id |
 
-**Note:** Use the tunnel manager to expose your local backend: `python scripts/start_tunnel.py`
+**Note:** Use ngrok to expose your local backend: `ngrok http http://127.0.0.1:8000`
 
 ### 5. Voice Settings (Optimal)
 
@@ -218,13 +218,8 @@ voiceAssistantApp/
 │   │   └── schemas.py              # Pydantic schemas
 │   ├── main.py                     # FastAPI app entry point
 │   └── __init__.py
-├── scripts/
-│   ├── start_tunnel.py            # Multi-provider tunnel manager
-│   └── vapi_simulator.py          # Interactive webhook tester
-├── config/
-│   └── vapi-assistant-config.json # Vapi assistant template
 ├── tests/
-│   └── test_api.py                # API test suite
+│   └── test_api.py                 # API test suite
 ├── docs/                           # Documentation (gitignored)
 ├── requirements.txt                # Dependencies
 ├── README.md                      # Documentation
@@ -256,19 +251,10 @@ curl -X POST http://localhost:8000/get_todos \
   -d '{"message":{"tool_calls":[{"id":"1","function":{"name":"get_todos","arguments":{}}}]}}'
 ```
 
-### Expose via Tunnel (for Vapi testing)
+### Expose via ngrok (for Vapi testing)
 ```bash
-# Option 1: Auto-detect best provider (recommended)
-python scripts/start_tunnel.py
-
-# Option 2: SSH tunnel (zero install, uses built-in SSH)
-python scripts/start_tunnel.py --provider ssh
-
-# Option 3: Cloudflare Tunnel
-python scripts/start_tunnel.py --provider cloudflare
-
-# Option 4: localtunnel (requires Node.js)
-python scripts/start_tunnel.py --provider localtunnel
+# Install ngrok first, then:
+ngrok http http://127.0.0.1:8000
 
 # Copy the HTTPS URL and use it in Vapi tools
 ```

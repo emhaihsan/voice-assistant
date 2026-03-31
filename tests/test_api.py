@@ -370,9 +370,9 @@ def main():
     if passed == total:
         print("\n🎉 SEMUA TEST BERHASIL! Implementation benar.")
         print("\nNext steps:")
-        print("  1. Start tunnel: python scripts/start_tunnel.py")
-        print("  2. Copy HTTPS URL ke Vapi dashboard")
-        print("  3. Configure tools di Vapi dashboard")
+        print("  1. Install ngrok: brew install ngrok")
+        print("  2. Run: ngrok http http://127.0.0.1:8000")
+        print("  3. Copy HTTPS URL ke Vapi dashboard")
         return 0
     else:
         print(f"\n⚠️  {total - passed} test gagal. Periksa implementation.")

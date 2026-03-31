@@ -16,8 +16,8 @@ Complete guide to configure Mike (AI Voice Assistant) in Vapi dashboard.
 ## Prerequisites
 
 - [ ] Phase 1 complete (backend implementation)
-- [ ] Phase 2 complete (tunnel active)
-- [ ] Tunnel URL ready (e.g., `https://xxxxx.lhr.life` or `https://xxxxx.trycloudflare.com`)
+- [ ] Phase 2 complete (ngrok tunnel active)
+- [ ] ngrok URL ready (e.g., `https://abc123.ngrok-free.app`)
 - [ ] Vapi account (free credits available at vapi.ai)
 
 ---
@@ -80,7 +80,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "create_todo",
   "description": "Create a new todo item. Use when the user wants to add a task to their todo list.",
-  "url": "https://YOUR_TUNNEL_URL/create_todo",
+  "url": "https://YOUR_NGROK_URL/create_todo",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -120,7 +120,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "get_todos",
   "description": "Get all todo items. Use when the user asks to see their todos or task list.",
-  "url": "https://YOUR_TUNNEL_URL/get_todos",
+  "url": "https://YOUR_NGROK_URL/get_todos",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -146,7 +146,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "complete_todo",
   "description": "Mark a todo as completed. Use when the user says they finished a task or wants to mark something as done. If ID is not specified, get the list first and ask user to clarify.",
-  "url": "https://YOUR_TUNNEL_URL/complete_todo",
+  "url": "https://YOUR_NGROK_URL/complete_todo",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -181,7 +181,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "delete_todo",
   "description": "Delete a todo item. Use when the user wants to remove a task. If ID is not specified, get the list first and ask user to clarify.",
-  "url": "https://YOUR_TUNNEL_URL/delete_todo",
+  "url": "https://YOUR_NGROK_URL/delete_todo",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -216,7 +216,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "add_reminder",
   "description": "Add a new reminder with importance level. Use when user wants to set a reminder.",
-  "url": "https://YOUR_TUNNEL_URL/add_reminder",
+  "url": "https://YOUR_NGROK_URL/add_reminder",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -257,7 +257,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "get_reminders",
   "description": "Get all reminders. Use when user asks to see their reminders.",
-  "url": "https://YOUR_TUNNEL_URL/get_reminders",
+  "url": "https://YOUR_NGROK_URL/get_reminders",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -283,7 +283,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "delete_reminder",
   "description": "Delete a reminder. Use when user wants to remove a reminder. If ID not specified, get the list first.",
-  "url": "https://YOUR_TUNNEL_URL/delete_reminder",
+  "url": "https://YOUR_NGROK_URL/delete_reminder",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -318,7 +318,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "add_calendar_entry",
   "description": "Add a calendar event. Use when user wants to schedule something. Ask for title, description (optional), start time, and end time. Convert natural language times to ISO format.",
-  "url": "https://YOUR_TUNNEL_URL/add_calendar_entry",
+  "url": "https://YOUR_NGROK_URL/add_calendar_entry",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -370,7 +370,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "get_calendar_entries",
   "description": "Get all calendar events. Use when user asks about their schedule or calendar.",
-  "url": "https://YOUR_TUNNEL_URL/get_calendar_entries",
+  "url": "https://YOUR_NGROK_URL/get_calendar_entries",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -396,7 +396,7 @@ For each endpoint, add a custom tool in the **Tools** tab:
 {
   "name": "delete_calendar_entry",
   "description": "Delete a calendar event. Use when user wants to cancel or remove an event. If ID not specified, get the list first.",
-  "url": "https://YOUR_TUNNEL_URL/delete_calendar_entry",
+  "url": "https://YOUR_NGROK_URL/delete_calendar_entry",
   "method": "POST",
   "headers": {
     "Content-Type": "application/json"
@@ -482,9 +482,9 @@ For each endpoint, add a custom tool in the **Tools** tab:
 ## Troubleshooting
 
 ### Tool Call Errors (400/404)
-- Check tunnel URL is correct in tool configuration
+- Check ngrok URL is correct in tool configuration
 - Ensure backend is running
-- Tunnel URL changes on restart - update Vapi tools
+- ngrok URL changes on restart - update Vapi tools
 
 ### LLM Not Calling Tools
 - Lower the temperature (0.1-0.3)
