@@ -40,7 +40,7 @@ def make_request(endpoint, function_name, arguments=None, tool_call_id="test_123
         return response
     except requests.exceptions.ConnectionError:
         print(f"❌ ERROR: Tidak bisa connect ke {BASE_URL}")
-        print("   Pastikan server sudah running: uvicorn app:app --reload")
+        print("   Pastikan server sudah running: uvicorn app.main:app --reload")
         sys.exit(1)
     except Exception as e:
         print(f"❌ ERROR: {e}")
@@ -266,14 +266,32 @@ def test_invalid_request():
     """Test error handling untuk invalid request"""
     print("\n⚠️  Test 12: Error Handling (Invalid Request)")
     
-    # Test dengan function name yang tidak ada
-    response = make_request("get_todos", "wrong_function_name", {}, "test_error_1")
+    # Test dengan function name yang tidak ada - direct request
+    import requests
+    payload = {
+        "message": {
+            "tool_calls": [{
+                "id": "test_error_1",
+                "function": {
+                    "name": "wrong_function_name",
+                    "arguments": {}
+                }
+            }]
+        }
+    }
     
-    if response and response.status_code == 400:
-        print("   ✅ Error handling berfungsi (return 400)")
-        return True
-    print("   ❌ Error handling tidak berfungsi dengan benar")
-    return False
+    try:
+        response = requests.post(f"{BASE_URL}/get_todos", json=payload, timeout=5)
+        print(f"   Status: {response.status_code}")
+        if response.status_code == 400:
+            print("   ✅ Error handling berfungsi (return 400)")
+            return True
+        else:
+            print(f"   ❌ Expected 400, got {response.status_code}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Exception: {type(e).__name__}: {e}")
+        return False
 
 def test_tool_call_id_echo():
     """Verify tool_call_id selalu di-echo balik"""
