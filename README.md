@@ -203,21 +203,52 @@ All endpoints are POST (Vapi requirement):
 
 ```
 voiceAssistantApp/
-├── app.py              # FastAPI backend
-├── requirements.txt    # Dependencies
-├── README.md          # Documentation
-└── .gitignore         # Git ignore rules
+├── app/
+│   ├── api/
+│   │   └── v1/
+│   │       └── endpoints/
+│   │           ├── todos.py         # Todo CRUD endpoints
+│   │           ├── reminders.py     # Reminder endpoints
+│   │           └── calendar.py      # Calendar endpoints
+│   ├── core/
+│   │   └── database.py            # Database config & session
+│   ├── models/
+│   │   └── models.py               # SQLAlchemy models
+│   ├── schemas/
+│   │   └── schemas.py              # Pydantic schemas
+│   ├── main.py                     # FastAPI app entry point
+│   └── __init__.py
+├── tests/
+│   └── test_api.py                 # API test suite
+├── docs/                           # Documentation (gitignored)
+├── requirements.txt                # Dependencies
+├── README.md                      # Documentation
+├── .gitignore                     # Git ignore rules
+└── run.py                         # Entry point runner
 ```
 
 ## Development
 
-### Run Tests
-```bash
-# Start server
-uvicorn app:app --reload
+### Run Server
 
-# Test with curl or httpie
-http POST localhost:8000/get_todos message:='{"tool_calls": [{"id": "1", "function": {"name": "get_todos", "arguments": {}}}]}'
+```bash
+# Run with uvicorn
+uvicorn app.main:app --reload
+
+# Or use the run script
+python run.py
+```
+
+### Run Tests
+
+```bash
+# Run full test suite
+python tests/test_api.py
+
+# Test with curl
+curl -X POST http://localhost:8000/get_todos \
+  -H "Content-Type: application/json" \
+  -d '{"message":{"tool_calls":[{"id":"1","function":{"name":"get_todos","arguments":{}}}]}}'
 ```
 
 ### Expose via ngrok (for Vapi testing)

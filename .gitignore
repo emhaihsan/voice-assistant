@@ -1,3 +1,12 @@
+# Documentation (markdown files)
+docs/
+*.md
+
+# Old monolithic files (replaced by modular structure)
+app.py.old
+voiceAssistantPlan.md
+PHASE2_TESTING.md
+
 # Database
 voice_assistant.db
 *.db
