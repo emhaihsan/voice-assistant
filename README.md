@@ -1,4 +1,8 @@
-# AI Voice Assistant - Mike
+# AI Voice Assistant 
+
+[![GitHub](https://img.shields.io/badge/GitHub-emhaihsan%2Fvoice--assistant-blue?logo=github)](https://github.com/emhaihsan/voice-assistant)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?logo=fastapi)](https://fastapi.tiangolo.com)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python)](https://python.org)
 
 Professional AI voice assistant built with **FastAPI** and **Vapi** (Voice API) integration. Users can call the assistant via phone or web to manage todos, reminders, and calendar events through natural voice conversations.
 
@@ -233,6 +237,17 @@ For production, deploy on:
 
 Update Vapi tools to use the production URL.
 
+## GitHub Repository
+
+**Source Code:** [github.com/emhaihsan/voice-assistant](https://github.com/emhaihsan/voice-assistant)
+
+```bash
+git clone https://github.com/emhaihsan/voice-assistant.git
+cd voice-assistant
+pip install -r requirements.txt
+uvicorn app:app --reload
+```
+
 ## License
 
-MIT# voice-assistant
+MIT
